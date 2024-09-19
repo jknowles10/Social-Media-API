@@ -30,3 +30,17 @@ const thoughtSchema = new Schema(
     }
 )
 
+function formatDate(date) {
+    let formattedDate = date.toLocaleString();
+    return formattedDate;
+
+}
+
+thoughtSchema.virtual('reactionCount').get(function () {
+    return this.reactions.length;
+
+});
+
+const thought = model('thought', thoughtSchema);
+modeule.exports = thought;
+

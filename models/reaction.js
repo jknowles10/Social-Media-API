@@ -4,7 +4,7 @@ const reactionSchema = new Schema(
     {
         reactionId: {
             type: Schema.Types.ObjectId, 
-            default: () => new.Types.ObjectId(),
+            default: () => new Types.ObjectId(),
 
         },
         reactionBody: {
@@ -35,3 +35,5 @@ function formatDate(date) {
     let formattedDate = date.toLocaleString();
     return formattedDate;
 }
+
+modeule.exports = reactionSchema;
