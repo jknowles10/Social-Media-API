@@ -1,0 +1,11 @@
+{
+    "name": "social-media-api",
+    "scripts": {
+      "start": "node server.js"
+    },
+    "dependencies": {
+      "express": "^4.17.1",
+      "mongoose": "^6.0.13",
+      "nodemon": "^3.1.6"
+    }
+  }
