@@ -14,7 +14,7 @@ async getAllThoughts(req, res) {
 // Get one thought
 async getOneThought(req, res) {
     try {
-        const thought = await Thought.findById(req.params.id);
+        const thought = await Thought.findById({ _id: req.params.thoughtId });
         if (!thought) {
             return res.status(404).json({ message: 'Thought not found' });
         }
@@ -26,21 +26,25 @@ async getOneThought(req, res) {
 
 // Create thought
 async createThought(req, res) {
+    const newThought = await Thought.create(req.body); //({ thoughtText: req.body.thoughtText, userId: req.body.userId });
     const user = await User.findById(
-        { id: req.body.userId}
-        { $addToSet: {thoughts: thought.id}},
+        { id: req.body.userId},
+        { $addToSet: { thoughts: newThought._id}},
         { new: true}
     );
     if (!user) {
         return res.status(404).json({ message: 'User not found' });
     }
-    const newThought = new Thought({ thoughtText: req.body.thoughtText, userId: req.body.userId });
+    
 },
 // Update thought
 
 async updateThought(req, res) {
     try {
-        const thought = await Thought.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+        const thought = await Thought.findByIdAndUpdate(
+            { _id: req.params.thoughtId},
+            { $set: req.body },
+            { new: true, runValidators: true });
         if (!thought) {
             return res.status(404).json({ message: 'Thought not found' });
         }
@@ -54,7 +58,9 @@ async updateThought(req, res) {
 
 async deleteThought(req, res) {
     try {
-        const thought = await Thought.findByIdAndDelete(req.params.id);
+        const thought = await Thought.findByIdAndDelete(
+            { _id: req.params.thoughtId }
+    );
         if (!thought) {
             return res.status(404).json({ message: 'Thought not found' });
         }
@@ -63,8 +69,8 @@ async deleteThought(req, res) {
         res.status(500).json(err);
     }
     const user = await User.findById(
-        { thoughts: req.params.id },
-        { $pull: { thoughts: req.params.id }},
+        { thoughts: req.params.thoughtId },
+        { $pull: { thoughts: req.params.thoughtId }},
         { new: true});
 
     if (!user) {

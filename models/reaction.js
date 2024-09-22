@@ -36,4 +36,4 @@ function formatDate(date) {
     return formattedDate;
 }
 
-modeule.exports = reactionSchema;
+module.exports = reactionSchema;
