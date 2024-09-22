@@ -26,12 +26,15 @@ async getOneThought(req, res) {
 
 // Create thought
 async createThought(req, res) {
-    const user = await User.findById(req.body.userId);
+    const user = await User.findById(
+        { id: req.body.userId}
+        { $addToSet: {thoughts: thought.id}},
+        { new: true}
+    );
     if (!user) {
         return res.status(404).json({ message: 'User not found' });
     }
     const newThought = new Thought({ thoughtText: req.body.thoughtText, userId: req.body.userId });
-       res.
 },
 // Update thought
 
@@ -59,14 +62,19 @@ async deleteThought(req, res) {
     } catch (err) {
         res.status(500).json(err);
     }
-    const user = await User.findById(req.params.id);
+    const user = await User.findById(
+        { thoughts: req.params.id },
+        { $pull: { thoughts: req.params.id }},
+        { new: true});
+
     if (!user) {
         return res.status(404).json({ message: 'User not found' });
     }
     res.json({ message: 'Thought deleted' });
-    user.thoughts.pull(req.params.id);
+
+   /* user.thoughts.pull(req.params.id);
     await user.save();
-    await Thought.findByIdAndUpdate(req.params.id, { $pull: { reactions: req.params.reactionId } }, { new: true });
+    await Thought.findByIdAndUpdate(req.params.id, { $pull: { reactions: req.params.reactionId } }, { new: true }); */
     }, catch (err) {
         res.status(500).json(err);
 
@@ -74,14 +82,17 @@ async deleteThought(req, res) {
     // Add reaction to thought
     async addReaction(req, res) {
     try {
-        const thought = await Thought.findById(req.params.thoughtId);
+        const thought = await Thought.findById(
+            { id: req.params.thoughtId },
+            { $addToSet: { reactions: req.body }},
+            { runValidators: true, new: true});
         if (!thought) {
             return res.status(404).json({ message: 'Thought not found' });
         }
-        const newReaction = new Reaction({ reactionBody: req.body.reactionBody, username: req.body.username });
+       /* const newReaction = new Reaction({ reactionBody: req.body.reactionBody, username: req.body.username });
         thought.reactions.push(newReaction);
         await thought.save();
-        res.json(newReaction);
+        res.json(newReaction); */
     } catch (err) {
         res.status(500).json(err);
     }
@@ -89,17 +100,21 @@ async deleteThought(req, res) {
     // Delete reaction from thought
     async deleteReaction(req, res) {
     try {
-        const thought = await Thought.findById(req.params.thoughtId);
+        const thought = await Thought.findById(
+            {id: req.params.thoughtId }, 
+            { $pull: { reactions: { reactionID: req.params.reactionId }}},
+            { runValidators: true, new: true});
+
         if (!thought) {
             return res.status(404).json({ message: 'Thought not found' });
         }
-        const reactionToRemove = thought.reactions.id(req.params.reactionId);
+        /* const reactionToRemove = thought.reactions.id(req.params.reactionId);
         if (!reactionToRemove) {
             return res.status(404).json({ message: 'Reaction not found' });
         }
         thought.reactions.pull(reactionToRemove);
         await thought.save();
-        res.json(reactionToRemove);
+        res.json(reactionToRemove); */
     } catch (err) {
         res.status(500).json(err);
     }

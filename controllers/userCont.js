@@ -7,7 +7,7 @@ async getAllUsers(req, res) {
         const users = await User.find({});
         res.json(users);
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        res.status(500).json(err);
     }
 },
 
@@ -28,7 +28,7 @@ async getUserById(req, res) {
     }
 },
 
-// Create user
+// Create user *** FIXME ***
 async createUser(req, res) {
     try {
         const newUser = new User(req.body);
@@ -44,7 +44,7 @@ async createUser(req, res) {
 },
 
 
-// Update user by ID
+// Update user by ID *** FIXME ***
 
 async updateUserById(req, res) {
     try {
