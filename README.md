@@ -17,7 +17,7 @@ Please ensure MongoDB is installed on your machine. After cloning repository, ru
 Please use Insomnia to test the functionality of the application. After installing dependencies, run node index.js in the command line in the main folder.
 
 ## Video Walkthrough 
-[Video Walkthrough](https://googledrive.com/)
+[Video Walkthrough](https://drive.google.com/file/d/1R_TLysNLWPlC1r9DII_kvIPg9bHJ1HCd/view?usp=sharing)
 
 ## License
 MIT License
